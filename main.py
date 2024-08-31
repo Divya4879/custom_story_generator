@@ -1,5 +1,11 @@
 from mistralai import Mistral
 import streamlit as st
+import os
+from dotenv import load_dotenv
+from colour import Color
+
+
+load_dotenv()
 
 
 background_image = """
@@ -9,6 +15,7 @@ background_image = """
     background-size: 100vw 100vh;
     background-position: center;  
     background-repeat: no-repeat;
+    opacity:0.9
 }
 </style>
 """
@@ -16,17 +23,18 @@ background_image = """
 st.markdown(background_image, unsafe_allow_html=True)
 
 
-api_key = "4J5FV9NMfls7auEarUq9WYuVfEp1KDB1"
+api_key = os.environ.get("MISTRAL_API_KEY")
 model = "mistral-large-latest"
 
-title = '<h1 style="font-family:serif;color:#f2ecfa; font-size: 48px;">Your customized story generator</h1>'
+title = '<h1 style="font-family:serif;color:#f2ecfa; font-size: 48px">Your customized story generator</h1>'
 st.markdown(title, unsafe_allow_html=True)
 
-subheading1 = '<h2 style="color:#f5f2f6; font-size: 36px;">Generate a customized story</h1>'
+subheading1 = '<h2 style="color:#f5f2f6; font-size: 40px;font-style:italic">Generate a customized story</h1>'
 st.markdown(subheading1, unsafe_allow_html=True)
 
+text = "Enter the approx no. of words in the story"
 
-words = st.number_input("Enter the approx no. of words in the story", 100, 800, "min", 100)
+words = st.number_input(text, 100, 800, "min", 100)
 
 theme = st.selectbox("Theme: ",
                      ['Romance', 'Horror', 'Adventurous','Fantasy','Fanfiction'])
@@ -53,12 +61,14 @@ else:
 
 
 if st.button("Generate my story"):
-    story=chat_response.choices[0].message.content
     
+    story = chat_response.choices[0].message.content
     title = client.chat.complete(
         model=model,
         messages=[{"role":"user", "content":f"What is the the most appropriate title of the {chat_response}?"}]
     )
-    st.header(title.choices[0].message.content.split(".")[0].split('**"')[1].strip('**"'))
+    title = title.choices[0].message.content.split(".")[0].split('**"')[1].strip('"**')
+    title = f":blue[{title}]"
+    st.header(title)
     st.text_area(label ="",value=story,height=400)
     

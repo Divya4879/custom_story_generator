@@ -1,3 +1,5 @@
+from mistralai.client import MistralClient
+from mistralai.models.chat_completion import ChatMessage
 from mistralai import Mistral
 import streamlit as st
 import os

@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 from colour import Color
-
+from mistralai import Mistral
 
 load_dotenv()
 

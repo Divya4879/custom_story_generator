@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>story-genai</title>
+    <style>
+        body{
+            background-image: url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA4L3N0YXJ0dXBpbWFnZXNfYmx1ZV9wdXJwbGVfc2t5X3doaXRlX2Nsb3Vkc19iYWNrZ3JvdW5kX2ltYWdlX2dyYV9jZDNlMTI5My03MjBkLTQ5ZTgtOTZkYy0yMTAyY2RhN2I2MzlfMS5qcGc.jpg");
+            background-size: 100vw 200vh;
+            background-position: center;  
+            background-repeat: no-repeat;
+            opacity:0.9,
+        }
+        h1,h2{
+            
+            text-align: center;
+        }
+        h1{
+            font-family:serif;
+            color:#52327a;
+            font-size:3.5rem;
+        }
+        h2{
+            color:#52327a;
+            font-size:2.5rem;
+            font-style:italic
+        }
+        form{
+            width:45vw;
+            border: 1px solid black;
+            border-radius: 20px;
+            margin-left: auto;
+            margin-right:auto;
+            background-color: whitesmoke;
+            text-align: center;
+        }
+        input{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your customized story generator</h1>
+    <h2>Generate a customized story</h2>
+
+    <form method="post" action="send_form">
+        <label for="quantity">Enter the approx no. of words in the story:</label>
+        <input type="number" id="quantity" name="quantity" min="400" max="1200">
+        <br>
+        <label for="genre">Enter the genre of the story</label><br>
+        <input type="text" id="genre" name="genre"><br>
+        <br><br>
+        <input type="submit">
+      </form>
+</body>
+</html>

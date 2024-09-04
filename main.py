@@ -1,8 +1,11 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-from mistralai import Mistral
+import google.generativeai as genai
 
+
+
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 load_dotenv()
 
 
@@ -34,7 +37,7 @@ words = st.number_input(text, 400, 1500, "min", 400)
 
 t = n = f":blue[Theme]"
 theme = st.selectbox(t,
-                     ['Romance', 'Horror', 'Adventurous','Fantasy','Fanfiction','Angst'])
+                     ['Horror', 'Adventurous','Fantasy','Fanfiction','Angst','Rags-to-Riches','Hardwork','Success'])
 
 
 
@@ -46,34 +49,46 @@ if theme== 'Fanfiction':
     reference = st.text_input(r)
 
 
-api_key = os.environ.get("MISTRAL_API_KEY")
-model = "mistral-large-latest"
-
-client = Mistral(api_key=api_key)
-
-if theme=='Fanfiction':
-    chat_response = client.chat.complete(
-    model=model,
-    messages=[{"role":"system", "content":f"You're a world renowned author. Write a story in about {words} words on the theme of {theme}, also it should have the genre of {genre} and it must be based on {reference}."}]
+model=genai.GenerativeModel(
+  model_name="gemini-1.5-flash",
+  system_instruction="You're a world renowned author. You've this experience for over 20 years."
 )
 
-else:
-    chat_response = client.chat.complete(
-        model=model,
-        messages=[{"role":"system", "content":f"You're a world renowned author. Write a story in about {words} words on the theme of {theme}, also it should have the genre of {genre}."}]
+try:
+    if theme=='Fanfiction':
+        response = model.generate_content(f" Write a story in about {words} words on the theme of {theme}, also it should have the genre of {genre} and it must be based on {reference}."
     )
 
+    else:
+        response = model.generate_content(f"You're a world renowned author. Write a story in about {words} words on the theme of {theme}, also it should have the genre of {genre}."
+        )
 
 
-if st.button("Generate my story"):
-    
-    story = chat_response.choices[0].message.content
-    title = client.chat.complete(
-        model=model,
-        messages=[{"role":"user", "content":f"What is the the most appropriate title of the {chat_response}?"}]
+
+    if st.button("Generate my story"):
+        
+        story = response.text
+        title = model.generate_content(f"What is the the most appropriate title of the {response}?"
+        )
+        title = title.text.split('"')[1]
+        title = f":blue[{title}]"
+        st.header(title)
+        st.text_area(label ="",value=story,height=400)
+        
+
+    response = model.generate_content(
+        "Tell me a story about a magic backpack.",
+        generation_config=genai.types.GenerationConfig(
+            
+            candidate_count=1,
+            stop_sequences=["x"],
+            max_output_tokens=20,
+            temperature=1.0,
+        ),
     )
-    title = title.choices[0].message.content.split(".")[0].split('**"')[1].strip('"**')
-    title = f":blue[{title}]"
-    st.header(title)
-    st.text_area(label ="",value=story,height=400)
-    
+
+    print(response.text)
+except:
+    msg = '<h1 style="font-family:serif;color:#0047AB; font-size: 30px">Enter another genre.</h1>'
+    # st.markdown(title)
+    st.write(msg, unsafe_allow_html=True)

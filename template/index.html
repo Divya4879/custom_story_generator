@@ -7,7 +7,7 @@
     <style>
         body{
             background-image: url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA4L3N0YXJ0dXBpbWFnZXNfYmx1ZV9wdXJwbGVfc2t5X3doaXRlX2Nsb3Vkc19iYWNrZ3JvdW5kX2ltYWdlX2dyYV9jZDNlMTI5My03MjBkLTQ5ZTgtOTZkYy0yMTAyY2RhN2I2MzlfMS5qcGc.jpg");
-            background-size: 100vw 200vh;
+            background-size: 100vw 240vh;
             background-position: center;  
             background-repeat: no-repeat;
             opacity:0.9,
@@ -27,31 +27,132 @@
             font-style:italic
         }
         form{
-            width:45vw;
-            border: 1px solid black;
+            width:50vw;
+            border: 1px solid rgb(167, 78, 239);
             border-radius: 20px;
             margin-left: auto;
             margin-right:auto;
-            background-color: whitesmoke;
+            background-color: rgb(31, 4, 63);
+            padding:80px;
+            padding-left:12%;
+            padding-top:100px;
+            opacity: 0.8;
+            /* text-align: center; */
+            padding-top:30px;
+            box-shadow: 10px 10px 10px 0px rgba(146, 59, 196, 0.8), 10px 10px 10px 0px rgba(146, 59, 196, 0.8) ,10px 10px 10px 0px rgba(146, 59, 196, 0.8) inset,10px 10px 10px 0px rgba(146, 59, 196, 0.8) inset;
+        }
+        input,select{
+            text-align: center;
+            width: 15rem;
+            height: 3rem;
+            border-radius: 20px;
+            position: relative;
+            left: 20%;
+        }
+
+        select{
+            left: 45%;
+        }
+
+        #genre{
+            left:27%;
+        }
+        form label{
+            font-style: italic;
+            font-size:24px;
+            color:#bda0e0;
+            font-weight: bold;
+            
+        }
+        #ref{
+            display: none;
+            width: 80%;
+        }
+
+        #story{
+            background-color:#bda0e0;
+            width:75%;
+            height:600px;
+            margin:8%;
+            opacity:0.8;
+            margin-left:auto;
+            margin-right:auto;
+            border-radius: 20px;
+            border:5px solid rgb(200, 129, 200);
+            padding:20px;
+            overflow-y: scroll;
+        }
+        #story h2{
+            color:#6a095c;
+            font-size:36px;
             text-align: center;
         }
-        input{
-            text-align: center;
+        #story p{
+            color:#2c0126;
+            font-size:20px;
+            font-style: italic;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        button{
+            padding:20px;
+            border-radius: 20px;
+            font-size: 24px;
+            color: #2c0126;
+            margin-left: 28%;
+            position: relative;
+            bottom: -10px;
+            font-weight: bold;
+            background-color: #dfcdf5;     
         }
     </style>
+    
 </head>
 <body>
     <h1>Your customized story generator</h1>
     <h2>Generate a customized story</h2>
 
-    <form method="post" action="send_form">
-        <label for="quantity">Enter the approx no. of words in the story:</label>
-        <input type="number" id="quantity" name="quantity" min="400" max="1200">
-        <br>
-        <label for="genre">Enter the genre of the story</label><br>
-        <input type="text" id="genre" name="genre"><br>
+    <form action="gen_story" method="post" enctype="multipart/form-data">
+        <label for="quantity">Approx no. of words in the story:</label>
+        <input type="number" id="quantity" name="quantity" value=400 min="400" max="1200">
         <br><br>
-        <input type="submit">
+
+        <label for="theme">Choose a theme: </label>
+        <select id="theme" name="theme">
+            <option value="horror">Horror</option>
+            <option value="adventurous">Adventurous</option>
+            <option value="fantasy" selected>Fantasy</option>
+            <option value="fanfiction">Fanfiction</option>
+            <option value="angst">Angst</option>
+            <option value="rags-to-riches">Rags-to-Riches</option>
+            <option value="hardwork">Hardwork</option>
+            <option value="success">Success</option>
+        </select>
+        <br><br>
+
+        
+        <input type="text" id="ref" name="ref" placeholder="Enter the name of the book/movie/drama on which you want it based on:">
+        <br><br>
+
+
+        
+        <label for="genre">Enter the genre of the story:</label>
+        <input type="text" id="genre" name="genre" placeholder="Happy/Tragic/Hopeful, Plot-twist,Angst...."><br><br>
+        <button onclick="location.href='/story'" type="submit">Generate a Story</button>
       </form>
+
+      
+      <script>
+        document.querySelector("#theme").addEventListener("change", function(e) {
+        const other = document.querySelector("#theme");
+        if (e.target.value === "fanfiction") {
+          document.querySelector("#ref").style.display = "block";
+        } else {
+            document.querySelector("#ref").style.display = "none";
+        }
+      });
+      
+  </script>
+      
 </body>
 </html>
